@@ -211,10 +211,10 @@ namespace sl {
         //};
     };
 
-    class ICp0Driver : public IConnect
+    class ISlamkitDriver : public IConnect
     {
     public:
-        virtual ~ICp0Driver() {}
+        virtual ~ISlamkitDriver() {}
 
     public:
         /// Retrieve the health status of the SL_CHASSIS
@@ -229,14 +229,14 @@ namespace sl {
         /// 
         /// \param info          The device information returned from the SL_CHASSIS
         /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getDeviceInfo(sl_cp0_info_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
+        virtual sl_result getDeviceInfo(sl_slamkit_info_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 
         /// Set motion hit and get imu processed data of the SL_CHASSIS, should include motion hit bit map.
         /// 
         /// \param req              The motion hit set to the SL_CHASSIS
         /// \param processed_data   The processed data returned from the SL_CHASSIS
         /// \param timeout          The operation timeout value (in millisecond) for port communication  
-        virtual sl_result set_motion_hit_and_get_imu_processed(const sl_cp0_read_imu_processed_request_t& req, sl_cp0_read_imu_processed_response_t& processed_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
+        virtual sl_result set_motion_hit_and_get_imu_processed(const sl_slamkit_read_imu_processed_request_t& req, sl_slamkit_read_imu_processed_response_t& processed_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
         
         /// Get imu raw data of the SL_CHASSIS include number, firmware version, device model etc.
         /// 
@@ -245,5 +245,5 @@ namespace sl {
         virtual sl_result getImuRawData(sl_imu_raw_data_t& imu_raw_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 };
 
-    std::shared_ptr<ICp0Driver> createCp0Driver();
+    std::shared_ptr<ISlamkitDriver> createSlamkitDriver();
 }

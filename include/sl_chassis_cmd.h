@@ -39,13 +39,13 @@
 #define SLAMTEC_PROTOCOL_VERSION                                   (0x1)
 
 
-//for cp0 cmd
-#define CMD_CODE_SLAMTEC_CP0                                            (0xF1)
+//for slamkit cmd
+#define CMD_CODE_SLAMTEC_SLAMKIT                                            (0xF1)
 
-#define SL_CP0_CMD_CONNECT                                              (0x10)
-#define SL_CP0_CMD_GET_DEVICE_INFO                                      (0x3f)
-#define SL_CP0_CMD_READ_IMU_PROCESSED                                   (0x5d)
-#define SL_CP0_CMD_READ_IMU_RAW                                         (0x5f)
+#define SL_SLAMKIT_CMD_CONNECT                                              (0x10)
+#define SL_SLAMKIT_CMD_GET_DEVICE_INFO                                      (0x3f)
+#define SL_SLAMKIT_CMD_READ_IMU_PROCESSED                                   (0x5d)
+#define SL_SLAMKIT_CMD_READ_IMU_RAW                                         (0x5f)
 
 
 #if defined(_WIN32)
@@ -60,14 +60,14 @@ typedef struct _sl_chassis_cmd_t
 
 
 #define BASIC_INFO_TYPE     (0)
-typedef struct _sl_cp0_info_request_t
+typedef struct _sl_slamkit_info_request_t
 {
     sl_u8  request_type;
     sl_u32 request_key;
-} __attribute__((packed)) sl_cp0_info_request_t;
+} __attribute__((packed)) sl_slamkit_info_request_t;
 
 
-typedef struct _sl_cp0_info_response_t
+typedef struct _sl_slamkit_info_response_t
 {
     sl_u16  model;
     sl_u16 firmware_version;
@@ -75,20 +75,20 @@ typedef struct _sl_cp0_info_response_t
     sl_u32  serial_number[4];
     sl_u32 hw_features;
     sl_u32 licensed_features;
-} __attribute__((packed)) sl_cp0_info_response_t;
+} __attribute__((packed)) sl_slamkit_info_response_t;
 
 
-#define CP0_REQUEST_MOTION_HINT_BITMAP_MOTION_BIT       (0x1<<0)
-#define CP0_REQUEST_MOTION_HINT_BITMAP_HAS_CONTROL_V    (0x1<<7)
+#define SLAMKIT_REQUEST_MOTION_HINT_BITMAP_MOTION_BIT       (0x1<<0)
+#define SLAMKIT_REQUEST_MOTION_HINT_BITMAP_HAS_CONTROL_V    (0x1<<7)
 
-typedef struct _sl_cp0_read_imu_processed_request_t
+typedef struct _sl_slamkit_read_imu_processed_request_t
 {
     sl_u32 request_key;
     sl_u8  motion_hint_bitmap;
     sl_s32 ux_q16;
     sl_s32 uy_q16;
     sl_s32 uw_q16;
-} __attribute__((packed)) sl_cp0_read_imu_processed_request_t;
+} __attribute__((packed)) sl_slamkit_read_imu_processed_request_t;
 
 
 typedef struct acc_processed_data
@@ -117,19 +117,19 @@ typedef struct gyro_processed_data
 
 #define IMU_BITMAP_AVAILABLE_BIT_HW_ERROR        (0x1<<7)
 
-typedef struct _sl_cp0_read_imu_processed_response_t
+typedef struct _sl_slamkit_read_imu_processed_response_t
 {
     sl_u32     timestamp;
     sl_u8      avail_bitmap; // 1st LSB for acc, 2nd for gyro ...
     acc_processed_data_t acc;
     gyro_processed_data_t gyro;
-} __attribute__((packed)) sl_cp0_read_imu_processed_response_t;
+} __attribute__((packed)) sl_slamkit_read_imu_processed_response_t;
 
 
-typedef struct _sl_cp0_read_imu_raw_request_t
+typedef struct _sl_slamkit_read_imu_raw_request_t
 {
     sl_u32 request_key;
-} __attribute__((packed)) _sl_cp0_read_imu_raw_request_t;
+} __attribute__((packed)) _sl_slamkit_read_imu_raw_request_t;
 
 
 typedef struct accelemeter_data
@@ -162,11 +162,11 @@ typedef struct compass_raw_data
     sl_u16 ref_volt;
 } __attribute__((packed)) compass_raw_data_t;
 
-typedef struct _sl_cp0_read_imu_raw_response_t
+typedef struct _sl_slamkit_read_imu_raw_response_t
 {
     inertia_sensor_data_t     inertia_raw_data;
     compass_raw_data_t        compass_raw_data;
-} __attribute__((packed)) sl_cp0_read_imu_raw_response_t;
+} __attribute__((packed)) sl_slamkit_read_imu_raw_response_t;
 
 
 

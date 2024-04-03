@@ -59,10 +59,10 @@ typedef decltype(nullptr) nullptr_t;
 
 namespace sl {
 
-    class SlamtecCp0Driver :public ICp0Driver
+    class SlamtecSlamkitDriver :public ISlamkitDriver
     {
     public:
-        SlamtecCp0Driver()
+        SlamtecSlamkitDriver()
             : _channel(nullptr)
             , _isConnected(false)
         {}
@@ -100,23 +100,23 @@ namespace sl {
             return _isConnected;
         }
 
-        sl_result getDeviceInfo(sl_cp0_info_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT)
+        sl_result getDeviceInfo(sl_slamkit_info_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT)
         {
             // TODO:
             struct _tx_req
             {
                 sl_chassis_cmd_t cmd;
-                sl_cp0_info_request_t payload;
+                sl_slamkit_info_request_t payload;
 
             }tx_req;
 
-            tx_req.cmd.cmd = SL_CP0_CMD_GET_DEVICE_INFO;
-            memset(&tx_req.payload, 0, sizeof(sl_cp0_info_request_t));
+            tx_req.cmd.cmd = SL_SLAMKIT_CMD_GET_DEVICE_INFO;
+            memset(&tx_req.payload, 0, sizeof(sl_slamkit_info_request_t));
 
             sl_result ans = SL_RESULT_OK;
             {
                 rp::hal::AutoLocker l(_lock);
-                ans = _sendCommand(CMD_CODE_SLAMTEC_CP0, 
+                ans = _sendCommand(CMD_CODE_SLAMTEC_SLAMKIT, 
                 reinterpret_cast<const void *>(&tx_req), sizeof(tx_req));
             }
             
@@ -141,29 +141,29 @@ namespace sl {
                 return SL_RESULT_OPERATION_FAIL;
             } 
 
-            sl_cp0_info_response_t* ppayload = (sl_cp0_info_response_t*) (&data_buffer[4]);
+            sl_slamkit_info_response_t* ppayload = (sl_slamkit_info_response_t*) (&data_buffer[4]);
             
-            memcpy(&info, ppayload, sizeof(sl_cp0_info_response_t));
+            memcpy(&info, ppayload, sizeof(sl_slamkit_info_response_t));
             return SL_RESULT_OK;
         }
 
-        sl_result set_motion_hit_and_get_imu_processed(const sl_cp0_read_imu_processed_request_t& req, sl_cp0_read_imu_processed_response_t& processed_data, sl_u32 timeout = DEFAULT_TIMEOUT)
+        sl_result set_motion_hit_and_get_imu_processed(const sl_slamkit_read_imu_processed_request_t& req, sl_slamkit_read_imu_processed_response_t& processed_data, sl_u32 timeout = DEFAULT_TIMEOUT)
         {
             //
             struct _tx_req
             {
                 sl_chassis_cmd_t cmd;
-                sl_cp0_read_imu_processed_request_t payload;
+                sl_slamkit_read_imu_processed_request_t payload;
 
             }tx_req;
 
-            tx_req.cmd.cmd = SL_CP0_CMD_READ_IMU_PROCESSED;
+            tx_req.cmd.cmd = SL_SLAMKIT_CMD_READ_IMU_PROCESSED;
             memcpy(&tx_req.payload, &req, sizeof(req));
 
             sl_result ans = SL_RESULT_OK;
             {
                 rp::hal::AutoLocker l(_lock);
-                ans = _sendCommand(CMD_CODE_SLAMTEC_CP0, 
+                ans = _sendCommand(CMD_CODE_SLAMTEC_SLAMKIT, 
                 reinterpret_cast<const void *>(&tx_req), sizeof(tx_req));
             }
             
@@ -173,7 +173,7 @@ namespace sl {
 
             {
                 rp::hal::AutoLocker l(_lock);
-                ans = _waitResponse(data_buffer, sizeof(sl_cp0_read_imu_processed_response_t), timeout);
+                ans = _waitResponse(data_buffer, sizeof(sl_slamkit_read_imu_processed_response_t), timeout);
             }
 
             if (SL_IS_FAIL(ans)) return ans;
@@ -193,9 +193,9 @@ namespace sl {
                 /* code */
             }
             
-            sl_cp0_read_imu_processed_response_t* ppayload = (sl_cp0_read_imu_processed_response_t*) (&data_buffer[4]);
+            sl_slamkit_read_imu_processed_response_t* ppayload = (sl_slamkit_read_imu_processed_response_t*) (&data_buffer[4]);
             
-            memcpy(&processed_data, ppayload, sizeof(sl_cp0_read_imu_processed_response_t));
+            memcpy(&processed_data, ppayload, sizeof(sl_slamkit_read_imu_processed_response_t));
  
             return SL_RESULT_OK;
         }
@@ -207,18 +207,18 @@ namespace sl {
             struct _tx_req
             {
                 sl_chassis_cmd_t cmd;
-                _sl_cp0_read_imu_raw_request_t payload;
+                _sl_slamkit_read_imu_raw_request_t payload;
 
             }tx_req;
 
-            tx_req.cmd.cmd = SL_CP0_CMD_READ_IMU_RAW;
+            tx_req.cmd.cmd = SL_SLAMKIT_CMD_READ_IMU_RAW;
             tx_req.payload.request_key = 0;
             // memcpy(&tx_req.payload, &req, sizeof(req));
 
             sl_result ans = SL_RESULT_OK;
             {
                 rp::hal::AutoLocker l(_lock);
-                ans = _sendCommand(CMD_CODE_SLAMTEC_CP0, 
+                ans = _sendCommand(CMD_CODE_SLAMTEC_SLAMKIT, 
                 reinterpret_cast<const void *>(&tx_req), sizeof(tx_req));
             }
             //printf("test send ans = %08X\r\n", ans);
@@ -227,12 +227,12 @@ namespace sl {
             //printf("test send 0\r\n");
 
             sl_u8 data_buffer[1024] = {0};
-            //sl_cp0_read_imu_raw_response_t raw_resp;
+            //sl_slamkit_read_imu_raw_response_t raw_resp;
             //memset(&raw_resp, 0, sizeof(raw_resp));
 
             {
                 rp::hal::AutoLocker l(_lock);
-                ans = _waitResponse(data_buffer, sizeof(sl_cp0_read_imu_raw_response_t), timeout);
+                ans = _waitResponse(data_buffer, sizeof(sl_slamkit_read_imu_raw_response_t), timeout);
             }
 
             if (ans) return ans;
@@ -247,7 +247,7 @@ namespace sl {
                 return SL_RESULT_OPERATION_FAIL;
             }
             
-            sl_cp0_read_imu_raw_response_t* ppayload = (sl_cp0_read_imu_raw_response_t*) (&data_buffer[4]);
+            sl_slamkit_read_imu_raw_response_t* ppayload = (sl_slamkit_read_imu_raw_response_t*) (&data_buffer[4]);
             
             imu_raw_data.acc_x = ppayload->inertia_raw_data.acc.acc_x;
             imu_raw_data.acc_y = ppayload->inertia_raw_data.acc.acc_y;
@@ -338,8 +338,8 @@ namespace sl {
     };
 
 
-    std::shared_ptr<ICp0Driver> createCp0Driver()
+    std::shared_ptr<ISlamkitDriver> createSlamkitDriver()
     {
-        return std::make_shared<SlamtecCp0Driver>();
+        return std::make_shared<SlamtecSlamkitDriver>();
     }
 }
