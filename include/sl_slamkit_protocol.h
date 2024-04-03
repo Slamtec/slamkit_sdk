@@ -1,5 +1,5 @@
 /*
-* Slamtec CHASSIS SDK
+* Slamtec SLAMKIT SDK
 *
 * sl_slamkit_protocol.h
 *
@@ -35,7 +35,7 @@
 
 #include "sl_types.h"
 
-#define SL_CHASSIS_CMD_SYNC_BYTE                        (0x50)
+#define SL_SLAMKIT_CMD_SYNC_BYTE                        (0x50)
 
 
 #define STATUS_CODE_SYNC                                (0x00)
@@ -63,7 +63,7 @@
 
 typedef struct sl_slamkit_cmd_packet_t
 {
-    sl_u8   sync_byte; //must be SL_CHASSIS_CMD_SYNC_BYTE
+    sl_u8   sync_byte; //must be SL_SLAMKIT_CMD_SYNC_BYTE
     sl_u16  length;
     sl_u8   cmd;
     sl_u8   data[0];

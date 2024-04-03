@@ -1,5 +1,5 @@
 /*
-* Slamtec CHASSIS SDK
+* Slamtec SLAMKIT SDK
 *
 * sl_slamkit_cmd.h
 *

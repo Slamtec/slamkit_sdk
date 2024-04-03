@@ -1,5 +1,5 @@
 /*
- * Slamtec CHASSIS SDK
+ * Slamtec SLAMKIT SDK
  *
  *  Copyright (c) 2014 - 2020 Shanghai Slamtec Co., Ltd.
  *  http://www.slamtec.com
@@ -131,7 +131,7 @@ namespace sl {
 
             if (SL_IS_FAIL(ans)) return ans;
 
-            if ((data_buffer[0] != SL_CHASSIS_CMD_SYNC_BYTE))
+            if ((data_buffer[0] != SL_SLAMKIT_CMD_SYNC_BYTE))
             {
                 return SL_RESULT_INVALID_DATA;
             }
@@ -178,7 +178,7 @@ namespace sl {
 
             if (SL_IS_FAIL(ans)) return ans;
 
-            if ((data_buffer[0] != SL_CHASSIS_CMD_SYNC_BYTE))
+            if ((data_buffer[0] != SL_SLAMKIT_CMD_SYNC_BYTE))
             {
                 return SL_RESULT_INVALID_DATA;
             }
@@ -237,7 +237,7 @@ namespace sl {
 
             if (ans) return ans;
 
-            if ((data_buffer[0] != SL_CHASSIS_CMD_SYNC_BYTE))
+            if ((data_buffer[0] != SL_SLAMKIT_CMD_SYNC_BYTE))
             {
                 return SL_RESULT_INVALID_DATA;
             }
@@ -279,12 +279,12 @@ namespace sl {
             cmd_packet.clear();
 
 			_channel->flush();
-            cmd_packet.push_back(SL_CHASSIS_CMD_SYNC_BYTE);
+            cmd_packet.push_back(SL_SLAMKIT_CMD_SYNC_BYTE);
             cmd_packet.push_back(length_l);
             cmd_packet.push_back(length_h);
             cmd_packet.push_back(cmd);
 
-            checksum ^= SL_CHASSIS_CMD_SYNC_BYTE;
+            checksum ^= SL_SLAMKIT_CMD_SYNC_BYTE;
             checksum ^= length_l;
             checksum ^= length_h;
             checksum ^= cmd;

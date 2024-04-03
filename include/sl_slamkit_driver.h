@@ -1,5 +1,5 @@
 /*
- *  Slamtec CHASSIS SDK
+ *  Slamtec SLAMKIT SDK
  *
  *  Copyright (c) 2020 Shanghai Slamtec Co., Ltd.
  *  http://www.slamtec.com
@@ -32,7 +32,7 @@
 #pragma once
 
 #ifndef __cplusplus
-#error "The Slamtec CHASSIS SDK requires a C++ compiler to be built"
+#error "The Slamtec SLAMKIT SDK requires a C++ compiler to be built"
 #endif
 
 #include <vector>
@@ -188,14 +188,14 @@ namespace sl {
 
     public:
         /**
-        * Connect to CHASSIS via channel
+        * Connect to SLAMKIT via channel
         * \param channel The communication channel
         *                    Note: you should manage the lifecycle of the channel object, make sure it is alive during slamkit driver's lifecycle
         */
         virtual sl_result connect(std::shared_ptr<IChannel> &channel) = 0;
 
         /**
-        * Disconnect from the CHASSIS
+        * Disconnect from the SLAMKIT
         */
         virtual void disconnect() = 0;
         
@@ -217,30 +217,30 @@ namespace sl {
         virtual ~ISlamkitDriver() {}
 
     public:
-        /// Retrieve the health status of the SL_CHASSIS
-        /// The host system can use this operation to check whether SL_CHASSIS is in the self-protection mode.
+        /// Retrieve the health status of the SL_SLAMKIT
+        /// The host system can use this operation to check whether SL_SLAMKIT is in the self-protection mode.
         ///
-        /// \param health        The health status info returned from the SL_CHASSIS
+        /// \param health        The health status info returned from the SL_SLAMKIT
         ///
         /// \param timeout       The operation timeout value (in millisecond) for port communication     
         //virtual sl_result getHealth(sl_slamkit_response_device_health_t& health, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 
-        /// Get the device information of the SL_CHASSIS include number, firmware version, device model etc.
+        /// Get the device information of the SL_SLAMKIT include number, firmware version, device model etc.
         /// 
-        /// \param info          The device information returned from the SL_CHASSIS
+        /// \param info          The device information returned from the SL_SLAMKIT
         /// \param timeout       The operation timeout value (in millisecond) for port communication  
         virtual sl_result getDeviceInfo(sl_slamkit_info_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 
-        /// Set motion hit and get imu processed data of the SL_CHASSIS, should include motion hit bit map.
+        /// Set motion hit and get imu processed data of the SL_SLAMKIT, should include motion hit bit map.
         /// 
-        /// \param req              The motion hit set to the SL_CHASSIS
-        /// \param processed_data   The processed data returned from the SL_CHASSIS
+        /// \param req              The motion hit set to the SL_SLAMKIT
+        /// \param processed_data   The processed data returned from the SL_SLAMKIT
         /// \param timeout          The operation timeout value (in millisecond) for port communication  
         virtual sl_result set_motion_hit_and_get_imu_processed(const sl_slamkit_read_imu_processed_request_t& req, sl_slamkit_read_imu_processed_response_t& processed_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
         
-        /// Get imu raw data of the SL_CHASSIS include number, firmware version, device model etc.
+        /// Get imu raw data of the SL_SLAMKIT include number, firmware version, device model etc.
         /// 
-        /// \param imu_raw_data  The imu raw data returned from the SL_CHASSIS
+        /// \param imu_raw_data  The imu raw data returned from the SL_SLAMKIT
         /// \param timeout       The operation timeout value (in millisecond) for port communication  
         virtual sl_result getImuRawData(sl_imu_raw_data_t& imu_raw_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 };
