@@ -44,46 +44,6 @@
 
 namespace sl {
 
-#if 0
-    template <typename T>
-    struct Result
-    {
-        sl_result err;
-        T value;
-        Result(const T& value)
-            : err(SL_RESULT_OK)
-            , value(value)
-        {
-        }
-
-        Result(sl_result err)
-            : err(err)
-            , value()
-        {
-        }
-
-        operator sl_result() const
-        {
-            return err;
-        }
-
-        operator bool() const
-        {
-            return SL_IS_OK(err);
-        }
-
-        T& operator* ()
-        {
-            return value;
-        }
-
-        T* operator-> ()
-        {
-            return &value;
-        }
-    };
-#endif
-
     typedef struct _sl_imu_raw_data_t
     {
         sl_s16     acc_x;
@@ -251,66 +211,6 @@ namespace sl {
         //};
     };
 
-
-    class IBaseDriver : public IConnect
-    {
-    public:
-        virtual ~IBaseDriver() {}
-
-    public:
-
-        /// Get the device information of the SL_CHASSIS include number, firmware version, device model etc.
-        /// 
-        /// \param info          The device information returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getDeviceInfo(sl_chassis_base_device_info_t& info, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-
-        /// Get the battery status of the SL_CHASSIS include battery percentage and power status(charging or not).
-        /// 
-        /// \param info          The battery status returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getBatteryStatus(sl_chassis_bat_status_response_t& status, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-
-        /// Get the ultrasonic sensor distance of the SL_CHASSIS.
-        /// 
-        /// \param info          The ultrasonic sensor data returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getUltraData(sl_chassis_ultrasonic_data_response_t& data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-        
-        /// Get the bumper and cliff sensor distance of the SL_CHASSIS.
-        /// 
-        /// \param info          The bumper and cliff sensor data returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getBumperCliffData(sl_chassis_bumper_and_cliff_data_response_t& data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-        
-        /// set velocity and Get the deadreckon of the SL_CHASSIS.
-        /// 
-        /// \param set_v         The velocity set to the SL_CHASSIS
-        /// \param deadreckon    The the deadreckon returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result set_v_and_get_deadreckon(const sl_chassis_set_velocity_request_t& set_v, sl_chassis_deadreckon_response_t& deadreckon, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-        
-        /// Get the health status of the SL_CHASSIS.
-        /// 
-        /// \param info          The health info returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getHealthInfo(sl_chassis_health_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-        
-        /// Get single health data of the SL_CHASSIS.
-        /// 
-        /// \param error_id      The health error id should return from the SL_CHASSIS
-        /// \param error_data    The detal single health info of error id returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result getSingleHealthData(const sl_chassis_health_error_request_t& error_id, sl_chassis_health_error_response_t& error_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-        
-        /// clear single health error code of the SL_CHASSIS.
-        /// 
-        /// \param error_code      The health error id should return from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result clearSingleHealthData(const sl_chassis_health_clear_error_request_t& error_code, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-    };
-
-
     class ICp0Driver : public IConnect
     {
     public:
@@ -331,18 +231,6 @@ namespace sl {
         /// \param timeout       The operation timeout value (in millisecond) for port communication  
         virtual sl_result getDeviceInfo(sl_cp0_info_response_t& info, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 
-        /// Set slamtec lidar power on of the SL_CHASSIS 
-        /// 
-        /// \param info          The battery status returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result setSLLidarPowerOn(sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-
-        /// Set slamtec lidar power off of the SL_CHASSIS 
-        /// 
-        /// \param info          The battery status returned from the SL_CHASSIS
-        /// \param timeout       The operation timeout value (in millisecond) for port communication  
-        virtual sl_result setSLLidarPowerOff(sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-
         /// Set motion hit and get imu processed data of the SL_CHASSIS, should include motion hit bit map.
         /// 
         /// \param req              The motion hit set to the SL_CHASSIS
@@ -355,21 +243,7 @@ namespace sl {
         /// \param imu_raw_data  The imu raw data returned from the SL_CHASSIS
         /// \param timeout       The operation timeout value (in millisecond) for port communication  
         virtual sl_result getImuRawData(sl_imu_raw_data_t& imu_raw_data, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-
-        /// Set the slamtec lidar baudrate of the SL_CHASSIS.
-        /// 
-        /// \param req          The baudrate set to the SL_CHASSIS
-        /// \param timeout      The operation timeout value (in millisecond) for port communication  
-        virtual sl_result setLidarBaudrate(const sl_cp0_set_lidar_baudrate_request_t& req, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
-
-        /// Set the slamtec lidar pwm of the SL_CHASSIS, only for A series slamtec lidar.
-        /// 
-        /// \param req          The pwm set to the SL_CHASSIS
-        /// \param timeout      The operation timeout value (in millisecond) for port communication  
-        virtual sl_result setLidarPwm(const sl_cp0_set_lidarmotor_pwm_request_t& req, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 };
 
-
-    std::shared_ptr<IBaseDriver> createBaseDriver();
     std::shared_ptr<ICp0Driver> createCp0Driver();
 }
