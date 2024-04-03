@@ -1,7 +1,7 @@
 /*
 * Slamtec CHASSIS SDK
 *
-* sl_chassis_cmd.h
+* sl_slamkit_cmd.h
 *
 * Copyright (c) 2020 Shanghai Slamtec Co., Ltd.
 */
@@ -33,7 +33,7 @@
 
 #pragma once
 
-#include "sl_chassis_protocol.h"
+#include "sl_slamkit_protocol.h"
 
 
 #define SLAMTEC_PROTOCOL_VERSION                                   (0x1)
@@ -52,11 +52,11 @@
 #pragma pack(1)
 #endif
 
-typedef struct _sl_chassis_cmd_t
+typedef struct _sl_slamkit_cmd_t
 {
     sl_u8   cmd;
     sl_u8  payload[0];
-} __attribute__((packed)) sl_chassis_cmd_t;
+} __attribute__((packed)) sl_slamkit_cmd_t;
 
 
 #define BASIC_INFO_TYPE     (0)

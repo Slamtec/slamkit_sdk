@@ -46,6 +46,6 @@
 #include "hal/types.h"
 #include "hal/assert.h"
 
-#include "sl_chassis.h"
+#include "sl_slamkit.h"
 
 #include "hal/util.h"

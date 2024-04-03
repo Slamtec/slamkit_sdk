@@ -40,7 +40,7 @@
 #include <string>
 #include <memory>
 
-#include "sl_chassis_cmd.h"
+#include "sl_slamkit_cmd.h"
 
 namespace sl {
 
@@ -190,7 +190,7 @@ namespace sl {
         /**
         * Connect to CHASSIS via channel
         * \param channel The communication channel
-        *                    Note: you should manage the lifecycle of the channel object, make sure it is alive during chassis driver's lifecycle
+        *                    Note: you should manage the lifecycle of the channel object, make sure it is alive during slamkit driver's lifecycle
         */
         virtual sl_result connect(std::shared_ptr<IChannel> &channel) = 0;
 
@@ -223,7 +223,7 @@ namespace sl {
         /// \param health        The health status info returned from the SL_CHASSIS
         ///
         /// \param timeout       The operation timeout value (in millisecond) for port communication     
-        //virtual sl_result getHealth(sl_chassis_response_device_health_t& health, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
+        //virtual sl_result getHealth(sl_slamkit_response_device_health_t& health, sl_u32 timeout = DEFAULT_TIMEOUT) = 0;
 
         /// Get the device information of the SL_CHASSIS include number, firmware version, device model etc.
         /// 

@@ -38,7 +38,7 @@
 #include "hal/locker.h"
 #include "hal/socket.h"
 #include "hal/event.h"
-#include "sl_chassis_driver.h"
+#include "sl_slamkit_driver.h"
 #include "sl_crc.h" 
 #include <algorithm>
 #include <chrono>
@@ -105,7 +105,7 @@ namespace sl {
             // TODO:
             struct _tx_req
             {
-                sl_chassis_cmd_t cmd;
+                sl_slamkit_cmd_t cmd;
                 sl_slamkit_info_request_t payload;
 
             }tx_req;
@@ -152,7 +152,7 @@ namespace sl {
             //
             struct _tx_req
             {
-                sl_chassis_cmd_t cmd;
+                sl_slamkit_cmd_t cmd;
                 sl_slamkit_read_imu_processed_request_t payload;
 
             }tx_req;
@@ -206,7 +206,7 @@ namespace sl {
             // TODO: 
             struct _tx_req
             {
-                sl_chassis_cmd_t cmd;
+                sl_slamkit_cmd_t cmd;
                 _sl_slamkit_read_imu_raw_request_t payload;
 
             }tx_req;

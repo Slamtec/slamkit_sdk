@@ -33,7 +33,7 @@
 
 #pragma once
 
-#include "sl_chassis_cmd.h"
+#include "sl_slamkit_cmd.h"
 
 namespace sl {namespace crc32 {
     sl_u32 bitrev(sl_u32 input, sl_u16 bw);//reflect

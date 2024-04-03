@@ -30,7 +30,7 @@
   *
   */
 
-#include "sl_chassis_driver.h"
+#include "sl_slamkit_driver.h"
 #include "hal/abs_rxtx.h"
 #include "hal/socket.h"
 

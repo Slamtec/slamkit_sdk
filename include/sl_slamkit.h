@@ -1,7 +1,7 @@
 /*
 * Slamtec CHASSIS SDK
 *
-* sl_chassis.h
+* sl_slamkit.h
 *
 * Copyright (c) 2020 Shanghai Slamtec Co., Ltd.
 */
@@ -33,7 +33,7 @@
 
 #pragma once
 
-#include "sl_chassis_driver.h"
+#include "sl_slamkit_driver.h"
 
 #define SL_CHASSIS_SDK_VERSION_MAJOR  0
 #define SL_CHASSIS_SDK_VERSION_MINOR  1

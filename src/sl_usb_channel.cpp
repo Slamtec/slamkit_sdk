@@ -30,7 +30,7 @@
   *
   */
 
-//#include "sl_chassis_driver.h"
+//#include "sl_slamkit_driver.h"
 #include "sdkcommon.h"
 //#include "hal/usb/libusb/include/libusb.h"
 #include <libusb-1.0/libusb.h>
