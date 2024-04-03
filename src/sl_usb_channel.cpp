@@ -39,6 +39,7 @@
 //#include "hal/thread.h"
 #include <string.h>
 #include <thread>
+#include <functional>
 
 namespace sl {
  
