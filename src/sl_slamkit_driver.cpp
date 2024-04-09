@@ -255,6 +255,9 @@ namespace sl {
             imu_raw_data.gyro_x = ppayload->inertia_raw_data.gyro.gyro_x;
             imu_raw_data.gyro_y = ppayload->inertia_raw_data.gyro.gyro_y;
             imu_raw_data.gyro_z = ppayload->inertia_raw_data.gyro.gyro_z;
+            imu_raw_data.mag_x = ppayload->compass_raw_data.hmc_x;
+            imu_raw_data.mag_y = ppayload->compass_raw_data.hmc_y;
+            imu_raw_data.mag_z = ppayload->compass_raw_data.hmc_z;
             imu_raw_data.timestamp = ppayload->inertia_raw_data.timestamp;
             
             return SL_RESULT_OK;
