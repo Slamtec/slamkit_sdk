@@ -89,8 +89,8 @@ namespace sl {
             int err = libusb_init(&_ctx);
             if(err != LIBUSB_SUCCESS )
             {
-                printf("libusb_init wrong %x:%x->%d , handle: %x error msg:  %s \n",
-                     _venderId, _productId, _interfaceId, _dev_handle,  libusb_strerror((enum libusb_error)err));
+                printf("libusb_init wrong %x:%x->%d , error msg:  %s \n",
+                     _venderId, _productId, _interfaceId, libusb_strerror((enum libusb_error)err));
                 return false;
             }
 
@@ -320,7 +320,7 @@ namespace sl {
                         }
                         default:
                         {
-                            printf("libusb_submit_transfer tx wrong, status: \r\n", _tx_libusb_transfer->status);
+                            printf("libusb_submit_transfer tx wrong, status: %d\r\n", _tx_libusb_transfer->status);
                             break;
                         }
                     }
