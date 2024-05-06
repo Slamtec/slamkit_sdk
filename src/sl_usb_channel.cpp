@@ -66,11 +66,13 @@ namespace sl {
         USBChannel(std::uint16_t venderId, std::uint16_t productId,
             std::uint16_t interfaceId, std::uint16_t txEndpoint, std::uint16_t rxEndpoint) 
             : _dev_handle(NULL)
+            , _ctx(NULL)
             , _is_interface_clamed(false)
             , _rx_size(0)
-            , _ctx(NULL)
             , _tx_libusb_transfer(NULL)
             , _rx_libusb_transfer(NULL)
+            , _is_pipe_working(false)
+            , _is_rx_thread_working(false)
         {
             _venderId = venderId;
             _productId = productId;
@@ -103,13 +105,13 @@ namespace sl {
             }
             else
             {
-                printf("open my_device %x:%x ok, handle: %x \n",  _venderId, _productId, _dev_handle);
+                printf("open my_device %x:%x ok, handle: %p \n",  _venderId, _productId, _dev_handle);
             }
 
             err = libusb_set_auto_detach_kernel_driver(_dev_handle, 1);
             if(err != LIBUSB_SUCCESS )
             {
-                printf("libusb_set_auto_detach_kernel_driver wrong %x:%x->%d , handle: %x error msg:  %s \n",
+                printf("libusb_set_auto_detach_kernel_driver wrong %x:%x->%d , handle: %p error msg:  %s \n",
                      _venderId, _productId, _interfaceId, _dev_handle,  libusb_strerror((enum libusb_error)err));
                 libusb_exit(_ctx);
                 return false;
@@ -118,7 +120,7 @@ namespace sl {
             err = libusb_claim_interface(_dev_handle, _interfaceId);
             if(err != LIBUSB_SUCCESS )
             {
-                printf("libusb_claim_interface wrong %x:%x->%d , handle: %x error msg:  %s \n",
+                printf("libusb_claim_interface wrong %x:%x->%d , handle: %p error msg:  %s \n",
                      _venderId, _productId, _interfaceId, _dev_handle,  libusb_strerror((enum libusb_error)err));
                 libusb_exit(_ctx);
                 return false;
@@ -159,7 +161,7 @@ namespace sl {
             _rx_libusb_transfer->length = 0;
             _rx_libusb_transfer->endpoint = _rxEndpoint & 0x80;
             _rx_libusb_transfer->type = LIBUSB_TRANSFER_TYPE_BULK;
-            _rx_libusb_transfer->timeout = RX_TICKET_SLEEP_TIME;
+            _rx_libusb_transfer->timeout = 0;
 
             start_pipe_line();
             return true;
@@ -194,7 +196,7 @@ namespace sl {
 
                 if(err != LIBUSB_SUCCESS )
                 {
-                    printf("libusb_release_interface wrong %x:%x->%d , handle: %x error msg:  %s \n",
+                    printf("libusb_release_interface wrong %x:%x->%d , handle: %p error msg:  %s \n",
                      _venderId, _productId,_interfaceId, _dev_handle,  libusb_strerror((enum libusb_error)err));
                 }
             }
@@ -228,7 +230,7 @@ namespace sl {
             int err = libusb_bulk_transfer(_dev_handle, 0x80 + _rxEndpoint, (unsigned char*)_rx_buffer, size, &ready_size, timeoutInMs);
             if (err != LIBUSB_SUCCESS)
             {
-                printf("libusb_bulk_transfer read wrong %x:%x->%d , handle: %x error msg:  %s \n",
+                printf("libusb_bulk_transfer read wrong %x:%x->%d , handle: %p error msg:  %s \n",
                      _venderId, _productId,_interfaceId, _dev_handle,  libusb_strerror((enum libusb_error)err));
 
                 if (actualReady)
@@ -255,7 +257,7 @@ namespace sl {
                 
                 if (err != LIBUSB_SUCCESS)
                 {
-                    printf("libusb_bulk_transfer read wrong 2: %x:%x->%d , handle: %x error msg:  %s \n",
+                    printf("libusb_bulk_transfer read wrong 2: %x:%x->%d , handle: %p error msg:  %s \n",
                         _venderId, _productId,_interfaceId, _dev_handle,  libusb_strerror((enum libusb_error)err));
 
                     
@@ -392,6 +394,7 @@ namespace sl {
     private:
         int pipeline_handler() 
         {
+            printf("pipeline_handler start ...\n");
             while (_is_pipe_working) 
             {
                 timeval tv;
@@ -403,11 +406,13 @@ namespace sl {
                     delay(100);
                 }
             }
+            printf("pipeline_handler end...\n");
             return 0;
         }
 
         void start_pipe_line()
         {
+            printf("pre start_pipe_line thread\n");
             rp::hal::AutoLocker lock(_pipeline_lock);
             if (_is_pipe_working) return;
 
@@ -423,6 +428,7 @@ namespace sl {
 
 
             _is_pipe_working = true;
+            printf("start_pipe_line thread\n");
         }
 
 

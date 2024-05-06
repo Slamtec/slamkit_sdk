@@ -66,6 +66,10 @@ namespace sl {
             : _channel(nullptr)
             , _isConnected(false)
         {}
+        ~SlamtecSlamkitDriver()
+        {
+            disconnect();
+        }
 
         sl_result connect(std::shared_ptr<IChannel> &channel)
         {
@@ -77,7 +81,7 @@ namespace sl {
             
             {
                 rp::hal::AutoLocker l(_lock);
-                ans = _channel->open();
+                bool ans = _channel->open();
                 if (!ans)
                     return SL_RESULT_OPERATION_FAIL;
 
@@ -93,6 +97,7 @@ namespace sl {
         {
             if (_isConnected)
                 _channel->close();
+            _isConnected = false;
         }
 
         bool isConnected()
